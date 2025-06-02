@@ -1,0 +1,14 @@
+"VertexlitGeneric"
+{
+	$baseTexture "models/swcw/items/datapad/datapad_d"
+	$bumpmap "models/swcw/items/datapad/datapad_n"
+	$surfaceprop Plastic
+	$halflambert 1
+	$selfillum 1
+	$selfillummask "models/swcw/items/datapad/datapad_e"
+	$phong 1
+	$phongboost 0.3
+	$phongexponenttexture "models/swcw/items/datapad/datapad_exp"
+	$phongfresnelranges "[4 14 10]"
+	$phongalbedotint 1
+}
