@@ -24,7 +24,7 @@ local datapadData = {}
 
 function SWEP:Initialize()
     self:SetHoldType("slam")
-    self.RadiusMode = 2 -- Default to Normal Voice mode
+    self.RadiusMode = 2
 end
 
 function SWEP:PrimaryAttack()

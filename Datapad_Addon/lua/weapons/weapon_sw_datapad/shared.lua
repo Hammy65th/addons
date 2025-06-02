@@ -21,4 +21,4 @@ SWEP.Secondary = SWEP.Primary
 
 SWEP.StoredText = ""
 SWEP.StoredHeadline = ""
-SWEP.RadiusMode = 2  -- Default Normal Voice mode
+SWEP.RadiusMode = 2 
