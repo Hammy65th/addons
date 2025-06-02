@@ -11,7 +11,6 @@ util.AddNetworkString("Datapad_RadiusMode")
 util.AddNetworkString("Datapad_Share")
 util.AddNetworkString("Datapad_ReceiveShared")
 
-
 local weaponClass = "weapon_sw_datapad"
 
 local radiusModes = {
@@ -103,8 +102,6 @@ net.Receive("Datapad_Share", function(_, ply)
     print("[SERVER] " .. ply:Nick() .. " shared datapad to " .. receivers .. " nearby player(s) within " .. radius .. " units")
     ply:ChatPrint("[Datapad] Shared with " .. receivers .. " nearby player(s) (" .. radius .. " units)")
 end)
-
-
 
 hook.Add("PlayerDeath", "Datapad_SaveOnDeath", function(ply)
     local wep = ply:GetActiveWeapon()

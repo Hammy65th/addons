@@ -52,12 +52,10 @@ surface.CreateFont("Datapad_Text", {
 
 local datapadFrame = nil
 
-
 net.Receive("Datapad_Open_UI", function()
     local current = net.ReadString()
     local headline = net.ReadString()
     
-
     local frame = vgui.Create("DFrame")
     frame:SetSize(620, 520)
     frame:Center()
@@ -149,32 +147,43 @@ net.Receive("Datapad_Open_UI", function()
         frame:Close()
         surface.PlaySound("buttons/button10.wav")
     end
-end)
 
-local shareCooldown = 0
+    datapadFrame = frame
 
-hook.Add("PlayerButtonDown", "Datapad_Share_OnR", function(ply, button)
-    if button == KEY_R then
-        
-        if IsValid(datapadFrame) and datapadFrame:IsVisible() then
-            print("[CLIENT] Datapad UI is open; share cancelled")
-            return
-        end
-
-        local wep = ply:GetActiveWeapon()
-        if IsValid(wep) and wep:GetClass() == "weapon_sw_datapad" then
-            print("[CLIENT] Sending share net message")
-            net.Start("Datapad_Share")
-            net.SendToServer()
-        else
-            print("[CLIENT] You are not holding the datapad!")
-        end
+    frame.OnClose = function()
+        datapadFrame = nil
     end
 end)
 
+-- Key share logic: only share on R key press when UI is closed, debounce to avoid spam
+local shareCooldown = 0
+local lastRDown = false
 
+hook.Add("Think", "Datapad_ShareOnRKey", function()
+    local ply = LocalPlayer()
+    if not IsValid(ply) then return end
 
+    local isRDown = input.IsKeyDown(KEY_R)
 
+    if isRDown and not lastRDown and CurTime() > shareCooldown then
+        -- Only proceed if the datapad UI is NOT open
+        if not (IsValid(datapadFrame) and datapadFrame:IsVisible()) then
+            local wep = ply:GetActiveWeapon()
+            if IsValid(wep) and wep:GetClass() == "weapon_sw_datapad" then
+                print("[CLIENT] Sending share net message")
+                net.Start("Datapad_Share")
+                net.SendToServer()
+                shareCooldown = CurTime() + 1 -- 1 second cooldown
+            else
+                print("[CLIENT] You are not holding the datapad!")
+            end
+        else
+            print("[CLIENT] Datapad UI is open; share cancelled")
+        end
+    end
+
+    lastRDown = isRDown
+end)
 
 net.Receive("Datapad_ReceiveShared", function()
     local senderName = net.ReadString()
@@ -185,10 +194,6 @@ net.Receive("Datapad_ReceiveShared", function()
     print("Headline: " .. headline)
     print("Content: " .. content)
 
-   
     chat.AddText(Color(0, 200, 255), "[Datapad from " .. senderName .. "]: ",
                  Color(255, 255, 0), headline .. " - " .. content)
 end)
-
-
-
