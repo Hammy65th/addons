@@ -5,7 +5,7 @@ SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
 SWEP.Base = "weapon_base"
-SWEP.Category = "Testing"
+SWEP.Category = "Other"
 
 SWEP.ViewModel = "models/swcw_items/sw_datapad_v.mdl"
 SWEP.WorldModel = "models/swcw_items/sw_datapad.mdl"
